@@ -36,7 +36,19 @@ try {
     $package = Join-Path $releases $name
     if (Test-Path -LiteralPath $package) { throw 'Package already exists.' }
     [void][IO.Directory]::CreateDirectory($releases)
-    $project = 'src/DesktopAgent.Windows/DesktopAgent.Windows.csproj'
+    # Publish from a clean production snapshot so runtime restore never rewrites the source lock files.
+    $snapshot = Join-Path $buildRoot ('package-source-' + $stamp)
+    [void][IO.Directory]::CreateDirectory($snapshot)
+    foreach ($configName in @('global.json','Directory.Build.props')) { Copy-Item -LiteralPath (Join-Path $root $configName) -Destination (Join-Path $snapshot $configName) }
+    foreach ($projectName in @('DesktopAgent.Core','DesktopAgent.Windows')) {
+        foreach ($file in Get-ChildItem -LiteralPath (Join-Path $root ('src/' + $projectName)) -Recurse -File) {
+            $relative = $file.FullName.Substring($root.Length + 1)
+            if ($relative -match '(^|\\)(bin|obj)(\\|$)' -or $file.Extension -notin @('.cs','.csproj','.xaml','.ico','.manifest') -or ($file.Attributes -band [IO.FileAttributes]::ReparsePoint)) { continue }
+            $target = Join-Path $snapshot $relative
+            [void][IO.Directory]::CreateDirectory((Split-Path -Parent $target)); Copy-Item -LiteralPath $file.FullName -Destination $target
+        }
+    }
+    $project = Join-Path $snapshot 'src/DesktopAgent.Windows/DesktopAgent.Windows.csproj'
     $properties = @('-p:RuntimeFrameworkVersion=10.0.11','-p:SelfContained=true','-p:RestorePackagesWithLockFile=false','-p:RestoreLockedMode=false','-p:NuGetAudit=false')
     Invoke-Dotnet (@('restore',$project,'-r','win-x64') + $restoreArgs + $properties)
     Invoke-Dotnet (@('publish',$project,'-c','Release','-r','win-x64','--self-contained','true','--no-restore','--output',$package,'--disable-build-servers') + $properties)
