@@ -59,6 +59,19 @@ try {
     Copy-Item -LiteralPath 'docs/PRIVACY.md' -Destination (Join-Path $package 'PRIVACY.md')
     Copy-Item -LiteralPath 'docs/RELEASE.md' -Destination (Join-Path $package 'RELEASE-NOTES.md')
     Copy-Item -LiteralPath 'LICENSE' -Destination (Join-Path $package 'LICENSE')
+    $assetFile = Join-Path (Split-Path -Parent $project) 'obj/project.assets.json'
+    $packageFolders = (Get-Content -LiteralPath $assetFile -Raw | ConvertFrom-Json).packageFolders.PSObject.Properties.Name
+    $notices = Join-Path $package 'third-party'
+    [void][IO.Directory]::CreateDirectory($notices)
+    foreach ($notice in @(
+        @('microsoft.netcore.app.runtime.win-x64','LICENSE.TXT','dotnet-runtime-LICENSE.txt'),
+        @('microsoft.netcore.app.runtime.win-x64','THIRD-PARTY-NOTICES.TXT','dotnet-runtime-NOTICES.txt'),
+        @('microsoft.windowsdesktop.app.runtime.win-x64','LICENSE','windows-desktop-LICENSE.txt')
+    )) {
+        $noticeSource = @($packageFolders | ForEach-Object { Join-Path $_ ($notice[0] + '/10.0.11/' + $notice[1]) } | Where-Object {Test-Path -LiteralPath $_}) | Select-Object -First 1
+        if (-not $noticeSource) { throw ('Missing runtime redistribution notice: ' + $notice[0] + '/' + $notice[1]) }
+        Copy-Item -LiteralPath $noticeSource -Destination (Join-Path $notices $notice[2])
+    }
     [IO.File]::WriteAllText((Join-Path $package 'START-HERE.txt'), "Prism / 棱镜 $version`r`n`r`n双击 Prism.cmd 启动。首次使用在设置中填入自己的模型密钥，并验证辅助定位。`r`n保留整个目录，不能只复制 exe。`r`nCtrl+Alt+F8 暂停，Ctrl+Alt+F9 停止。主窗口关闭后进入托盘，右键托盘可退出。`r`n本包不含密钥或个人数据。此为预览版，功能边界见 RELEASE-NOTES.md。`r`n", [Text.UTF8Encoding]::new($false))
     $commit = if (Get-Command git -ErrorAction SilentlyContinue) { (& git rev-parse HEAD 2>$null) -join '' } else { 'unavailable' }
     $dirty = if (Get-Command git -ErrorAction SilentlyContinue) { -not [string]::IsNullOrWhiteSpace((& git status --porcelain 2>$null) -join '') } else { $null }
