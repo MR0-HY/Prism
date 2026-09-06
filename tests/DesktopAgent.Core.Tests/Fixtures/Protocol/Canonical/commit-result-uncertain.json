@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "p-canonical",
+  "taskId": "aabbccdd-1111-4222-8333-1234567890ab",
+  "epoch": 7,
+  "frameId": "frame-current",
+  "current": "Inspecting the visible fixture",
+  "next": "Verify the next observation",
+  "decision": {
+    "kind": "commit_result",
+    "status": "uncertain",
+    "evidence": [
+      {
+        "frameId": "frame-current",
+        "appName": "NativeFixture",
+        "observedText": "测试消息",
+        "interpretation": "The visible fixture contains the expected text.",
+        "uncertainty": "The relevant area is obscured"
+      }
+    ],
+    "reason": "The outcome cannot be determined"
+  }
+}

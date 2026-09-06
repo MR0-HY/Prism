@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "p-canonical",
+  "taskId": "aabbccdd-1111-4222-8333-1234567890ab",
+  "epoch": 7,
+  "frameId": "frame-current",
+  "current": "Inspecting the visible fixture",
+  "next": "Verify the next observation",
+  "decision": {
+    "kind": "act",
+    "action": {
+      "type": "text",
+      "text": "first\nsecond"
+    },
+    "target": "A visible field",
+    "expected": "The field has focus"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "p-canonical",
+  "taskId": "aabbccdd-1111-4222-8333-1234567890ab",
+  "epoch": 7,
+  "frameId": "frame-current",
+  "current": "Inspecting the visible fixture",
+  "next": "Verify the next observation",
+  "decision": {
+    "kind": "finish",
+    "outcome": "partial",
+    "summary": "The requested graphic is visible but its label is unclear",
+    "evidence": [
+      {
+        "frameId": "frame-current",
+        "appName": "NativeFixture",
+        "observedText": "",
+        "interpretation": "The visible fixture contains the expected text.",
+        "region": {
+          "x0": 200,
+          "y0": 200,
+          "x1": 800,
+          "y1": 800
+        },
+        "sourceUrl": null,
+        "uncertainty": "The caption is not readable"
+      }
+    ]
+  }
+}

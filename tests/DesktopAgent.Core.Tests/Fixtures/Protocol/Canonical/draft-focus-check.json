@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "p-canonical",
+  "taskId": "aabbccdd-1111-4222-8333-1234567890ab",
+  "epoch": 7,
+  "frameId": "frame-current",
+  "current": "Inspecting the visible fixture",
+  "next": "Verify the next observation",
+  "decision": {
+    "kind": "draft_focus_check",
+    "recipientMatches": true,
+    "draftEmpty": true,
+    "focusInDraft": true,
+    "reason": "The empty draft has a visible caret"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "p-canonical",
+  "taskId": "aabbccdd-1111-4222-8333-1234567890ab",
+  "epoch": 7,
+  "frameId": "frame-current",
+  "current": "Inspecting the visible fixture",
+  "next": "Verify the next observation",
+  "decision": {
+    "kind": "prepare_message",
+    "recipient": "虚构测试联系人",
+    "text": "你好，测试 🐈",
+    "recipientRegion": {
+      "x0": 0,
+      "y0": 0,
+      "x1": 300,
+      "y1": 100
+    },
+    "draftRegion": {
+      "x0": 0,
+      "y0": 200,
+      "x1": 700,
+      "y1": 800
+    },
+    "sendRegion": {
+      "x0": 800,
+      "y0": 800,
+      "x1": 1000,
+      "y1": 1000
+    },
+    "draftPoint": {
+      "x": 350,
+      "y": 500
+    },
+    "sendAction": {
+      "type": "click",
+      "x": 900,
+      "y": 900,
+      "button": "left",
+      "clickCount": 1
+    }
+  }
+}

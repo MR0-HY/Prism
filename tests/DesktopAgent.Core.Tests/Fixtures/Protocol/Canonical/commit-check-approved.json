@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "proposalId": "p-canonical",
+  "taskId": "aabbccdd-1111-4222-8333-1234567890ab",
+  "epoch": 7,
+  "frameId": "frame-current",
+  "current": "Inspecting the visible fixture",
+  "next": "Verify the next observation",
+  "decision": {
+    "kind": "commit_check",
+    "recipientMatches": true,
+    "draftMatches": true,
+    "sendRegion": {
+      "x0": 800,
+      "y0": 800,
+      "x1": 1000,
+      "y1": 1000
+    },
+    "sendAction": {
+      "type": "click",
+      "x": 900,
+      "y": 900,
+      "button": "left",
+      "clickCount": 1
+    },
+    "reason": "The recipient and draft match in the new frame"
+  }
+}
