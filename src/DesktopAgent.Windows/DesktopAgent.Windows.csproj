@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>DesktopAgent</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Presentation/prism.ico</ApplicationIcon>
+    <Product>Prism · 棱镜</Product>
+    <Description>Native Windows desktop assistant</Description>
+    <Version>0.2.0-preview.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Presentation/prism.ico" />
+    <ProjectReference Include="..\DesktopAgent.Core\DesktopAgent.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,27 @@
+name: Windows build
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Build and offline-protocol tests
+        shell: pwsh
+        run: ./scripts/Build.ps1 -Task Test
+      - name: Package preview
+        shell: pwsh
+        run: ./scripts/Build.ps1 -Task Package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Prism-preview-win-x64
+          path: |
+            releases/*.zip
+            releases/*.sha256

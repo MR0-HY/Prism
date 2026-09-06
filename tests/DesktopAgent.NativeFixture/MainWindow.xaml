@@ -1,0 +1,111 @@
+﻿<Window x:Class="DesktopAgent.NativeFixture.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Desktop Agent · 原生测试夹具（虚构 / 无联网）"
+        Width="1120" Height="820" MinWidth="940" MinHeight="720"
+        FontFamily="Microsoft YaHei UI" FontSize="13" Background="#F2F4F8">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="0,0,0,14">
+            <TextBlock Text="原生 Windows 测试夹具" FontSize="23" FontWeight="SemiBold"/>
+            <TextBlock Text="独立 WPF 窗口 · 全部联系人与消息均为虚构 · 无联网 · 不操作其他应用" Foreground="#46536B" Margin="0,5,0,0"/>
+            <TextBlock x:Name="EvidenceModeText" Text="等待手工或后续原生输入测试；当前窗口不是生产 Agent。" Foreground="#7A4A00" Margin="0,4,0,0" TextWrapping="Wrap"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="46*"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="54*"/>
+            </Grid.ColumnDefinitions>
+            <Border Background="White" CornerRadius="8" Padding="14" BorderBrush="#DDE2EB" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel>
+                        <Button x:Name="ShuffleButton" DockPanel.Dock="Right" Content="更换布局" Click="Shuffle_Click"/>
+                        <TextBlock Text="键鼠试验区" FontWeight="SemiBold" FontSize="17" VerticalAlignment="Center"/>
+                    </DockPanel>
+                    <TextBlock Grid.Row="1" x:Name="LayoutText" Margin="0,8,0,8" Foreground="#56627A"/>
+                    <Canvas Grid.Row="2" x:Name="Playground" Background="#EDF2FC" ClipToBounds="True"
+                            MinHeight="200" SizeChanged="Playground_SizeChanged"
+                            PreviewMouseDown="Playground_PreviewMouseDown" PreviewMouseUp="Playground_PreviewMouseUp"
+                            PreviewMouseMove="Playground_PreviewMouseMove" PreviewMouseWheel="Playground_PreviewMouseWheel">
+                        <Button x:Name="TargetButton" Content="点击蓝色按钮" Width="126" Height="42"
+                                Background="#D6E6FF" Click="TargetButton_Click" MouseDoubleClick="TargetButton_MouseDoubleClick"/>
+                        <TextBox x:Name="PlainTextBox" Width="184" Height="42" MaxLength="1000"
+                                 ToolTip="普通输入框：可输入中文与 emoji；这里的 ENTER / CTRL+ENTER / ALT+S 不发送消息"
+                                 AutomationProperties.Name="普通测试输入框" TextChanged="PlainTextBox_TextChanged"/>
+                        <Border x:Name="DropZone" Width="126" Height="72" Background="#DFF4E6" BorderBrush="#379365" BorderThickness="2" CornerRadius="5">
+                            <TextBlock x:Name="DropZoneText" Text="拖拽靶区&#10;命中 0" TextAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </Border>
+                        <Thumb x:Name="DragTarget" Width="94" Height="48" Cursor="SizeAll"
+                               DragStarted="DragTarget_DragStarted" DragDelta="DragTarget_DragDelta" DragCompleted="DragTarget_DragCompleted">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Border Background="#FDE8BC" BorderBrush="#CB8F27" BorderThickness="1" CornerRadius="5">
+                                        <TextBlock Text="拖我到靶区" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Canvas>
+                    <TextBlock Grid.Row="3" Text="蓝色按钮：单击 / 双击 / 右击；在试验区滚轮。黄色块拖动后回位。白色框用于普通文本。" TextWrapping="Wrap" Foreground="#56627A" Margin="0,10,0,0"/>
+                </Grid>
+            </Border>
+            <Border Grid.Column="2" Background="White" CornerRadius="8" Padding="14" BorderBrush="#DDE2EB" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="虚构聊天 · 不连接微信" FontWeight="SemiBold" FontSize="17"/>
+                    <ComboBox Grid.Row="1" x:Name="ContactPicker" Margin="0,10,0,0" Padding="7" DisplayMemberPath="DisplayLabel"
+                              AutomationProperties.Name="虚构联系人" SelectionChanged="ContactPicker_SelectionChanged"/>
+                    <TextBlock Grid.Row="2" x:Name="RecipientText" Margin="0,8,0,8" FontWeight="SemiBold" Foreground="#245B7F" TextWrapping="Wrap"/>
+                    <ListBox Grid.Row="3" x:Name="ChatHistory" Background="#F6F8FC" BorderBrush="#DDE2EB" MinHeight="60"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="3,5"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Grid.Row="4" Margin="0,10,0,0">
+                        <TextBlock Text="每个联系人保留独立草稿；当前框有焦点时，ENTER / CTRL+ENTER / ALT+S 均发送。" TextWrapping="Wrap" Foreground="#56627A" Margin="0,0,0,6"/>
+                        <TextBox x:Name="DraftBox" Height="64" MaxLength="1000" AcceptsReturn="False" TextWrapping="Wrap"
+                                 AutomationProperties.Name="虚构聊天草稿" TextChanged="DraftBox_TextChanged" PreviewKeyDown="DraftBox_PreviewKeyDown"/>
+                    </StackPanel>
+                    <DockPanel Grid.Row="5" Margin="0,9,0,0">
+                        <Button x:Name="SendButton" DockPanel.Dock="Right" Content="发送（虚构）" Click="SendButton_Click"/>
+                        <TextBlock x:Name="SendCountText" VerticalAlignment="Center" Foreground="#245B7F" TextWrapping="Wrap"/>
+                    </DockPanel>
+                </Grid>
+            </Border>
+        </Grid>
+        <DockPanel Grid.Row="2" Margin="0,12,0,8">
+            <Button DockPanel.Dock="Right" Content="清空事件计数" Click="ClearCounters_Click" Margin="12,0,0,0"/>
+            <TextBlock x:Name="CountersText" TextWrapping="Wrap" VerticalAlignment="Center" FontFamily="Consolas, Microsoft YaHei UI"/>
+        </DockPanel>
+        <Border Grid.Row="3" Background="#172136" CornerRadius="6" Padding="8">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                <TextBlock Text="事件日志 · 坐标为试验区 WPF DIP，非屏幕物理像素 · 最近 160 条" Foreground="#BFCFEA" Margin="0,0,0,5"/>
+                <ListBox Grid.Row="1" x:Name="EventLog" ItemsSource="{Binding Logs}" Background="Transparent" BorderThickness="0"
+                         Foreground="#EEF4FF" FontFamily="Consolas, Microsoft YaHei UI" FontSize="11"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
