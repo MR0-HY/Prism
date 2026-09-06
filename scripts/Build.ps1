@@ -81,7 +81,7 @@ try {
     $zip = Join-Path $releases ($name + '.zip')
     Compress-Archive -LiteralPath $package -DestinationPath $zip -CompressionLevel Optimal
     [IO.File]::WriteAllText($zip + '.sha256', (Get-FileHash -LiteralPath $zip).Hash.ToLowerInvariant() + '  ' + [IO.Path]::GetFileName($zip) + [Environment]::NewLine, [Text.Encoding]::ASCII)
-    @{package=$package;zip=$zip;sha256=(Get-FileHash -LiteralPath $zip).Hash.ToLowerInvariant();sourceCommit=$commit} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $buildRoot 'last-package.json') -Encoding utf8
+    @{package=$package;zip=$zip;snapshot=$snapshot;sha256=(Get-FileHash -LiteralPath $zip).Hash.ToLowerInvariant();sourceCommit=$commit} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $buildRoot 'last-package.json') -Encoding utf8
     Write-Output "Package: $package"
     Write-Output "Release asset: $zip"
 }

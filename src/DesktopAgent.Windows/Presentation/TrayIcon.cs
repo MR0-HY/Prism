@@ -22,7 +22,9 @@ internal sealed class TrayIcon : IDisposable
         _window = window; _show = show; _pause = pause; _stop = stop; _exit = exit;
         var hwnd = new WindowInteropHelper(window).EnsureHandle();
         _source = HwndSource.FromHwnd(hwnd); _source.AddHook(Hook);
-        var path = System.IO.Path.Combine(AppContext.BaseDirectory, "DesktopAgent.exe");
+        var path = Environment.ProcessPath;
+        if (string.IsNullOrEmpty(path) || System.IO.Path.GetFileNameWithoutExtension(path).Equals("dotnet", StringComparison.OrdinalIgnoreCase))
+            path = System.IO.Path.Combine(AppContext.BaseDirectory, "DesktopAgent.exe");
         nint[] small = new nint[1];
         ExtractIconEx(path, 0, null, small, 1);
         _data = new() { Size = (uint)Marshal.SizeOf<Data>(), Window = hwnd, Id = 1, Flags = 7, CallbackMessage = Callback,
