@@ -30,6 +30,14 @@
 
 </details>
 
+### 专注当前这一步
+
+<img src="docs/images/hud-light.png" width="310" alt="浅色悬浮任务卡" /> <img src="docs/images/hud-dark.png" width="310" alt="深色悬浮任务卡" />
+
+任务完成后继续对话，或收成桌面上的小胶囊：
+
+<img src="docs/images/capsule.png" width="310" alt="空闲胶囊" />
+
 ## 开始使用
 
 1. 解压 Windows x64 便携包，保留整个目录，运行 **Prism.cmd**。

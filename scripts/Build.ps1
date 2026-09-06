@@ -11,7 +11,7 @@ $root = [IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
 $buildRoot = Join-Path $root '.build'
 [void][IO.Directory]::CreateDirectory($buildRoot)
 $savedEnvironment = @{}
-$overrides = @{ DOTNET_CLI_HOME=(Join-Path $buildRoot 'dotnet-home'); DOTNET_CLI_TELEMETRY_OPTOUT='1'; DOTNET_NOLOGO='1'; DOTNET_SKIP_FIRST_TIME_EXPERIENCE='1' }
+$overrides = @{ DOTNET_CLI_HOME=(Join-Path $buildRoot 'dotnet-home'); DOTNET_CLI_TELEMETRY_OPTOUT='1'; DOTNET_NOLOGO='1'; DOTNET_SKIP_FIRST_TIME_EXPERIENCE='1'; DOTNET_ADD_GLOBAL_TOOLS_TO_PATH='0'; DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE='1' }
 if ($PackageCache) { $overrides.NUGET_PACKAGES = [IO.Path]::GetFullPath($PackageCache) }
 foreach ($name in $overrides.Keys) { $savedEnvironment[$name] = [Environment]::GetEnvironmentVariable($name,'Process'); [Environment]::SetEnvironmentVariable($name,$overrides[$name],'Process') }
 function Invoke-Dotnet([string[]]$Arguments) { & $DotnetPath @Arguments; if ($LASTEXITCODE -ne 0) { throw "dotnet command failed (exit $LASTEXITCODE)" } }
